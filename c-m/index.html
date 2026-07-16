@@ -108,15 +108,7 @@
       transform: scale(1.03);
     }
 
-    /* Map pulse ring */
-    @keyframes pulse-ring {
-      0%   { box-shadow: 0 0 0 0 rgba(154,171,137,0.5); }
-      70%  { box-shadow: 0 0 0 22px rgba(154,171,137,0); }
-      100% { box-shadow: 0 0 0 0 rgba(154,171,137,0); }
-    }
-    .animate-pulse-ring {
-      animation: pulse-ring 2.8s cubic-bezier(0.16,1,0.3,1) infinite;
-    }
+
 
     /* Subtle float */
     @keyframes float-y {
@@ -127,23 +119,9 @@
       animation: float-y 5s ease-in-out infinite;
     }
 
-    /* Map image clip reveal (loaded) */
-    .map-img-clip {
-      clip-path: inset(0 100% 0 0);
-      transition: clip-path 1.2s cubic-bezier(0.16,1,0.3,1) 0.3s;
-    }
-    .reveal.revealed .map-img-clip {
-      clip-path: inset(0 0 0 0);
-    }
-
     @media (prefers-reduced-motion: reduce) {
-      .animate-pulse-ring,
       .animate-float {
         animation: none;
-      }
-      .map-img-clip {
-        clip-path: inset(0 0 0 0);
-        transition: none;
       }
     }
   </style>
@@ -378,45 +356,31 @@
         <div class="lg:col-span-7 reveal reveal-delay-1">
           <div class="relative group/map">
 
-            <!-- Ambient glow  (aparece en hover) -->
+            <!-- Ambient glow (aparece en hover) -->
             <div class="absolute -inset-6 rounded-[2.5rem] bg-accent/6 blur-3xl opacity-0 group-hover/map:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
 
             <!-- Contenedor del mapa -->
             <div class="relative rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl shadow-black/40 transition-all duration-500 group-hover/map:border-accent/25 group-hover/map:shadow-accent/5">
-              <!-- Mapa estático de OpenStreetMap -->
-              <img
-                src="https://staticmap.openstreetmap.de/staticmap.php?center=41.390,2.165&zoom=16&size=800x500&maptype=mapnik"
-                alt="Mapa de ubicación: C&gt;M en Mallorca 55-57, Barcelona"
-                class="map-img-clip w-full h-auto object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/map:scale-[1.02]"
+
+              <!-- Google Maps iframe con filtro oscuro -->
+              <iframe
+                src="https://maps.google.com/maps?q=Mallorca+55-57,+08110+Barcelona&output=embed&z=17&hl=es"
+                width="100%"
+                height="100%"
+                class="w-full aspect-[8/5] block"
+                style="border:0; filter: invert(0.88) hue-rotate(180deg) grayscale(0.3) brightness(0.85) contrast(0.95);"
                 loading="lazy"
-                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
-              >
-              <!-- Fallback si el mapa no carga -->
-              <div class="hidden w-full aspect-[8/5] bg-surface items-center justify-center flex-col gap-3 text-muted p-10">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-accent/60"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                <p class="text-sm">Mallorca 55-57, 08110 Barcelona</p>
-              </div>
+                referrerpolicy="no-referrer-when-downgrade"
+                title="Ubicacion de C>M en Google Maps"
+                allowfullscreen
+              ></iframe>
 
-              <!-- Gradiente sutil sobre el mapa -->
-              <div class="absolute inset-0 bg-gradient-to-tr from-base/25 via-transparent to-transparent pointer-events-none"></div>
-
-              <!-- Marcador CSS  (punto pulsante) -->
-              <div class="absolute pointer-events-none" style="top:48%;left:50%;">
-                <div class="relative -translate-x-1/2 -translate-y-1/2">
-                  <!-- Anillo exterior pulsante -->
-                  <div class="absolute inset-0 w-10 h-10 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 rounded-full animate-pulse-ring"></div>
-                  <!-- Punto central -->
-                  <div class="relative w-5 h-5 rounded-full bg-accent shadow-lg shadow-accent/40 ring-2 ring-base/60">
-                    <div class="absolute inset-0 rounded-full bg-accent-hover animate-ping opacity-30"></div>
-                  </div>
-                </div>
-              </div>
             </div>
 
-            <!-- Enlace "ver mapa más grande" -->
+            <!-- Enlace "ver en Google Maps" -->
             <p class="text-center mt-4 text-xs text-muted/50">
-              <a href="https://www.openstreetmap.org/?mlat=41.390&amp;mlon=2.165&amp;zoom=16" target="_blank" rel="noopener" class="hover:text-accent transition-colors duration-300 underline underline-offset-2 decoration-white/5 hover:decoration-accent/30">
-                Ver mapa más grande ↗
+              <a href="https://maps.google.com/?q=Mallorca+55-57,+08110+Barcelona" target="_blank" rel="noopener" class="hover:text-accent transition-colors duration-300 underline underline-offset-2 decoration-white/5 hover:decoration-accent/30">
+                Ver en Google Maps ↗
               </a>
             </p>
           </div>
