@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C&gt;M - Peluquer&iacute;a en Barcelona</title>
+  <meta name="description" content="C>M Peluquería. Cortes, coloración y tratamientos capilares en el corazón de Barcelona. Mallorca 55-57, 08110.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Geist', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            base:   '#0a0a0a',
+            surface:'#141414',
+            border: '#262626',
+            ink:    '#f5f2ed',
+            muted:  '#9c9892',
+            accent: '#9aab89',
+            'accent-hover':'#b4c2a4',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-feature-settings: 'ss01','ss02','cv01','cv02'; -webkit-font-smoothing: antialiased; }
+
+    /* Scroll-reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.10s; }
+    .reveal-delay-2 { transition-delay: 0.20s; }
+    .reveal-delay-3 { transition-delay: 0.30s; }
+    .reveal-delay-4 { transition-delay: 0.40s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      html { scroll-behavior: auto; }
+    }
+
+    /* Nav glass pill */
+    .nav-glass {
+      background: rgba(10,10,10,0.72);
+      backdrop-filter: blur(20px) saturate(140%);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    @media (prefers-reduced-transparency: reduce) {
+      .nav-glass {
+        background: rgba(10,10,10,0.96);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+    }
+
+    /* Hero image reveal */
+    .hero-img-clip {
+      clip-path: inset(0 0 0 0);
+      transition: clip-path 1.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .hero-img-clip.loaded {
+      clip-path: inset(0 0 0 0);
+    }
+
+    /* Hover glow on CTA */
+    .cta-glow {
+      transition: box-shadow 0.35s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.35s cubic-bezier(0.16,1,0.3,1),
+                  background 0.35s cubic-bezier(0.16,1,0.3,1);
+    }
+    .cta-glow:hover {
+      box-shadow: 0 0 28px rgba(154,171,137,0.18),
+                  0 0 56px rgba(154,171,137,0.08);
+    }
+    .cta-glow:active {
+      transform: scale(0.97);
+    }
+
+    /* Image zoom on hover */
+    .img-hover-zoom {
+      transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
+    }
+    .img-hover-zoom:hover {
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body class="bg-base text-ink font-sans antialiased selection:bg-accent/30 selection:text-ink">
+
+  <!-- ============================================================ -->
+  <!-- FLOATING NAV                                                  -->
+  <!-- ============================================================ -->
+  <nav class="fixed top-0 inset-x-0 z-50 flex justify-center pointer-events-none">
+    <div class="nav-glass pointer-events-auto mt-5 px-5 py-3 rounded-full flex items-center gap-8 transition-shadow duration-500">
+      <a href="#" class="text-lg font-bold tracking-tight text-ink hover:text-accent transition-colors duration-300">
+        C&gt;M
+      </a>
+      <a href="#servicios" class="hidden sm:inline text-sm font-medium text-muted hover:text-ink transition-colors duration-300">
+        Servicios
+      </a>
+      <a href="#sobre-nosotros" class="hidden sm:inline text-sm font-medium text-muted hover:text-ink transition-colors duration-300">
+        Sobre nosotros
+      </a>
+      <a href="#contacto" class="hidden sm:inline text-sm font-medium text-muted hover:text-ink transition-colors duration-300">
+        Contacto
+      </a>
+      <a href="#contacto"
+         class="cta-glow inline-flex items-center gap-2 bg-accent text-base rounded-full px-5 py-2 text-sm font-semibold tracking-tight transition-all duration-300 hover:bg-accent-hover group">
+        Reservar cita
+        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-base/25 group-hover:translate-x-0.5 group-hover:-translate-y-px transition-transform duration-300">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- HERO                                                          -->
+  <!-- ============================================================ -->
+  <section class="min-h-[100dvh] flex items-center pt-20 md:pt-24 pb-16 md:pb-20 overflow-hidden">
+    <div class="w-full max-w-[1400px] mx-auto px-6 md:px-10 lg:px-14">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-center">
+
+        <!-- Texto -->
+        <div class="md:col-span-7 reveal">
+          <p class="text-xs font-medium uppercase tracking-[0.18em] text-accent mb-5">
+            Peluquería &middot; Barcelona
+          </p>
+          <h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-[-0.025em] leading-[0.95] text-ink mb-6 max-w-[12ch]">
+            Tu estilo,<br>nuestra pasión
+          </h1>
+          <p class="text-base sm:text-lg text-muted leading-relaxed max-w-[42ch] mb-8">
+            Cortes, coloración y tratamientos que realzan tu identidad en el corazón de Barcelona.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <a href="#contacto"
+               class="cta-glow inline-flex items-center gap-2 bg-accent text-base rounded-full px-7 py-3.5 text-base font-semibold tracking-tight hover:bg-accent-hover group">
+              Reservar cita
+              <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-base/25 group-hover:translate-x-0.5 group-hover:-translate-y-px transition-transform duration-300">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              </span>
+            </a>
+            <a href="#servicios"
+               class="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-base font-semibold tracking-tight text-ink border border-white/10 hover:bg-white/5 hover:border-white/20 transition-all duration-300">
+              Ver servicios
+            </a>
+          </div>
+        </div>
+
+        <!-- Imagen -->
+        <div class="md:col-span-5 relative reveal reveal-delay-2">
+          <div class="relative rounded-[2rem] overflow-hidden aspect-[4/5] md:aspect-[3/4] border border-white/5">
+            <img
+              src="https://images.unsplash.com/photo-1560869713-7d0a29430803?w=800&q=80"
+              alt="Interior de peluquería C>M"
+              class="img-hover-zoom w-full h-full object-cover"
+              loading="eager"
+              onerror="this.src='https://source.unsplash.com/800x1000/?hair,salon,interior'"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-base/40 to-transparent pointer-events-none"></div>
+          </div>
+          <!-- Sutil decoración flotante -->
+          <div class="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-accent/10 blur-2xl pointer-events-none hidden md:block"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SERVICIOS                                                     -->
+  <!-- ============================================================ -->
+  <section id="servicios" class="py-24 md:py-36 px-6 md:px-10 lg:px-14">
+    <div class="max-w-[1400px] mx-auto">
+
+      <div class="mb-16 md:mb-24 reveal">
+        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.025em] leading-[0.95] text-ink mb-5">
+          Servicios
+        </h2>
+        <p class="text-base sm:text-lg text-muted max-w-[48ch] leading-relaxed">
+          Técnica, precisión y producto de alta gama para un resultado que habla por sí solo.
+        </p>
+      </div>
+
+      <!-- 2x2 grid tipográfico - NO cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 md:gap-y-16">
+        <div class="reveal reveal-delay-1 group cursor-default">
+          <div class="flex items-baseline justify-between mb-3">
+            <h3 class="text-2xl sm:text-3xl font-semibold tracking-[-0.015em] text-ink group-hover:text-accent transition-colors duration-300">
+              Corte y peinado
+            </h3>
+            <span class="text-sm font-medium text-muted tabular-nums">desde 25€</span>
+          </div>
+          <p class="text-muted leading-relaxed max-w-[42ch]">
+            Cortes personalizados, brushing, recogidos y alisados adaptados a tu tipo de cabello y estilo de vida.
+          </p>
+          <div class="mt-4 h-px w-16 bg-white/10 group-hover:w-24 group-hover:bg-accent/40 transition-all duration-500"></div>
+        </div>
+
+        <div class="reveal reveal-delay-2 group cursor-default">
+          <div class="flex items-baseline justify-between mb-3">
+            <h3 class="text-2xl sm:text-3xl font-semibold tracking-[-0.015em] text-ink group-hover:text-accent transition-colors duration-300">
+              Coloración
+            </h3>
+            <span class="text-sm font-medium text-muted tabular-nums">desde 45€</span>
+          </div>
+          <p class="text-muted leading-relaxed max-w-[42ch]">
+            Balayage, mechas, color global y matizaciones con productos que respetan la fibra capilar.
+          </p>
+          <div class="mt-4 h-px w-16 bg-white/10 group-hover:w-24 group-hover:bg-accent/40 transition-all duration-500"></div>
+        </div>
+
+        <div class="reveal reveal-delay-3 group cursor-default">
+          <div class="flex items-baseline justify-between mb-3">
+            <h3 class="text-2xl sm:text-3xl font-semibold tracking-[-0.015em] text-ink group-hover:text-accent transition-colors duration-300">
+              Tratamientos
+            </h3>
+            <span class="text-sm font-medium text-muted tabular-nums">desde 30€</span>
+          </div>
+          <p class="text-muted leading-relaxed max-w-[42ch]">
+            Hidratación profunda, keratina, alisado japonés y protocolos reparadores para cabello dañado.
+          </p>
+          <div class="mt-4 h-px w-16 bg-white/10 group-hover:w-24 group-hover:bg-accent/40 transition-all duration-500"></div>
+        </div>
+
+        <div class="reveal reveal-delay-4 group cursor-default">
+          <div class="flex items-baseline justify-between mb-3">
+            <h3 class="text-2xl sm:text-3xl font-semibold tracking-[-0.015em] text-ink group-hover:text-accent transition-colors duration-300">
+              Barbería
+            </h3>
+            <span class="text-sm font-medium text-muted tabular-nums">desde 20€</span>
+          </div>
+          <p class="text-muted leading-relaxed max-w-[42ch]">
+            Corte clásico, arreglo de barba y afeitado tradicional con navaja. El ritual completo.
+          </p>
+          <div class="mt-4 h-px w-16 bg-white/10 group-hover:w-24 group-hover:bg-accent/40 transition-all duration-500"></div>
+        </div>
+      </div>
+
+      <div class="mt-16 text-center reveal reveal-delay-4">
+        <a href="#contacto"
+           class="cta-glow inline-flex items-center gap-2 bg-accent text-base rounded-full px-7 py-3.5 text-base font-semibold tracking-tight hover:bg-accent-hover group">
+          Consultar disponibilidad
+          <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-base/25 group-hover:translate-x-0.5 group-hover:-translate-y-px transition-transform duration-300">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SOBRE NOSOTROS                                                -->
+  <!-- ============================================================ -->
+  <section id="sobre-nosotros" class="py-24 md:py-36 px-6 md:px-10 lg:px-14">
+    <div class="max-w-[1400px] mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-20 items-center">
+
+        <!-- Imagen -->
+        <div class="md:col-span-5 reveal">
+          <div class="relative rounded-[2.5rem] overflow-hidden aspect-[4/5] border border-white/5">
+            <img
+              src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80"
+              alt="Estilista de C>M trabajando"
+              class="img-hover-zoom w-full h-full object-cover"
+              loading="lazy"
+              onerror="this.src='https://source.unsplash.com/800x1000/?hair,stylist,scissors'"
+            >
+          </div>
+        </div>
+
+        <!-- Texto -->
+        <div class="md:col-span-7 reveal reveal-delay-2">
+          <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.025em] leading-[0.95] text-ink mb-6">
+            Sobre nosotros
+          </h2>
+          <div class="space-y-5 text-base sm:text-lg text-muted leading-relaxed max-w-[58ch]">
+            <p>
+              En <span class="text-ink font-medium">C&gt;M</span> entendemos que el cabello es identidad. Cada corte, cada color y cada tratamiento que realizamos está pensado para potenciar lo mejor de ti, respetando tu estilo y la salud de tu cabello.
+            </p>
+            <p>
+              Trabajamos con productos de alta gama y técnicas actualizadas constantemente. Nuestro equipo combina años de experiencia con una visión fresca de la peluquería contemporánea.
+            </p>
+            <p>
+              Ven a visitarnos a <span class="text-ink font-medium">Mallorca 55-57, 08110 Barcelona</span> y descubre un espacio donde la calidad y el detalle marcan la diferencia.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- CONTACTO                                                      -->
+  <!-- ============================================================ -->
+  <section id="contacto" class="py-24 md:py-40 px-6 md:px-10 lg:px-14">
+    <div class="max-w-[1400px] mx-auto">
+      <div class="max-w-3xl mx-auto text-center reveal">
+
+        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-[-0.025em] leading-[0.95] text-ink mb-6">
+          Ven a conocernos
+        </h2>
+        <p class="text-base sm:text-lg text-muted leading-relaxed mb-14 max-w-[42ch] mx-auto">
+          Pide tu cita y te asesoraremos sobre el estilo que mejor se adapta a ti. Te esperamos.
+        </p>
+
+        <!-- Dirección en bloque premium -->
+        <div class="inline-block text-left bg-surface border border-border rounded-[2rem] p-10 md:p-14 mb-12 reveal reveal-delay-1">
+          <div class="space-y-6">
+            <div>
+              <p class="text-xs font-medium uppercase tracking-[0.15em] text-muted mb-2">Dirección</p>
+              <p class="text-xl sm:text-2xl font-semibold text-ink leading-relaxed">
+                Mallorca 55-57<br>08110 Barcelona
+              </p>
+            </div>
+            <div>
+              <p class="text-xs font-medium uppercase tracking-[0.15em] text-muted mb-2">Horario</p>
+              <p class="text-xl sm:text-2xl font-semibold text-ink leading-relaxed">
+                Lunes a Viernes<br>
+                <span class="text-muted font-normal">10:00 - 20:00</span>
+              </p>
+            </div>
+            <div class="pt-2">
+              <p class="text-xs font-medium uppercase tracking-[0.15em] text-muted mb-2">Teléfono</p>
+              <p class="text-xl sm:text-2xl font-semibold text-ink">
+                Consultar en el local
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal reveal-delay-2">
+          <a href="#"
+             class="cta-glow inline-flex items-center gap-2 bg-accent text-base rounded-full px-10 py-4 text-lg font-semibold tracking-tight hover:bg-accent-hover group">
+            Reservar cita
+            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-base/25 group-hover:translate-x-0.5 group-hover:-translate-y-px transition-transform duration-300">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- FOOTER                                                        -->
+  <!-- ============================================================ -->
+  <footer class="border-t border-border py-10 px-6 md:px-10 lg:px-14">
+    <div class="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <a href="#" class="text-lg font-bold tracking-tight text-ink hover:text-accent transition-colors duration-300">
+        C&gt;M
+      </a>
+      <p class="text-sm text-muted">
+        Mallorca 55-57, 08110 Barcelona
+      </p>
+      <p class="text-sm text-muted">
+        &copy; 2026 C&gt;M Peluquer&iacute;a
+      </p>
+    </div>
+  </footer>
+
+  <!-- ============================================================ -->
+  <!-- SCROLL REVEAL                                                 -->
+  <!-- ============================================================ -->
+  <script>
+    (function() {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px',
+      });
+
+      document.querySelectorAll('.reveal').forEach(function(el) {
+        observer.observe(el);
+      });
+    })();
+  </script>
+
+</body>
+</html>

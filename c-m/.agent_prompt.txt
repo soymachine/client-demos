@@ -1,0 +1,47 @@
+Crea una página web one-page ESPECTACULAR para el siguiente negocio. Tiene que ser de nivel Awwwards, con diseño premium, tipografía cuidada, y motion sutil pero impactante.
+
+## DATOS DEL NEGOCIO
+- Nombre: C>M
+- Categoría: Peluquería
+- Dirección: Mallorca 55-57, 08110 Barcelona
+- Teléfono: No disponible
+- Estado actual: no tiene página web
+- Carpeta de salida: /Users/danimoyalya2/Documents/Dani/Personal/Clients/c-m
+
+## REQUISITOS TÉCNICOS
+1. Crea la web DENTRO de la carpeta `/Users/danimoyalya2/Documents/Dani/Personal/Clients/c-m`. No la crees en otro sitio.
+2. La web debe ser un único archivo `index.html` autónomo (CSS y JS inline o CDN).
+3. Usa Tailwind CSS desde CDN: `<script src="https://cdn.tailwindcss.com"></script>`
+4. Usa Motion (Framer Motion) desde CDN si añades animaciones.
+5. Usa fuentes de Google Fonts (Geist, Satoshi, Cabinet Grotesk, o Outfit - NUNCA Inter ni Roboto).
+6. Para imágenes, usa Unsplash Source (gratis): `https://source.unsplash.com/800x600/?peluquería` o similar. Las imágenes deben ser REALES del sector, no placeholders genéricos.
+7. La web debe verse ESPECTACULAR, no genérica. Tipografía grande, espacios generosos, paleta cuidada.
+
+## REQUISITOS DE DISEÑO (OBLIGATORIO)
+- NO uses Inter, Roboto, Arial, ni Helvetica como fuentes
+- NO uses gradientes morados/azules genéricos de IA
+- NO uses 3 cards iguales en fila como estructura por defecto
+- NO uses sombras duras ni bordes grises genéricos
+- Usa un hero limpio con una sola frase potente + CTA claro
+- Incluye secciones: Hero → Servicios → Sobre nosotros → Contacto → Footer
+- La paleta debe ser coherente con el sector (ej: restaurante = tonos cálidos, clínica = tonos limpios y confiables)
+- Usa `min-h-[100dvh]` NUNCA `h-screen`
+- Añade una animación sutil de entrada (fade-up) en al menos 2 secciones
+- Texto del hero: máximo 8 palabras, subtexto máximo 20 palabras
+
+## IMÁGENES
+Usa fotos reales del sector. Ejemplos:
+- Restaurante: `https://source.unsplash.com/1200x800/?restaurant,interior`
+- Clínica: `https://source.unsplash.com/1200x800/?medical,clinic`
+- Peluquería: `https://source.unsplash.com/1200x800/?hair,salon`
+- Gimnasio: `https://source.unsplash.com/1200x800/?gym,fitness`
+- Abogacía: `https://source.unsplash.com/1200x800/?office,professional`
+- Tienda: `https://source.unsplash.com/1200x800/?store,boutique`
+
+## ENTREGABLE
+Cuando termines, confirma con un mensaje corto diciendo "WEBSITE_GENERATED: /Users/danimoyalya2/Documents/Dani/Personal/Clients/c-m".
+
+IMPORTANTE: NO uses write_file para crear los archivos. Usa el comando cat con heredoc en terminal así:
+cat > /Users/danimoyalya2/Documents/Dani/Personal/Clients/c-m/index.html << 'HTMLEOF'
+...contenido HTML...
+HTMLEOF

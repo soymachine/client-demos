@@ -1,0 +1,42 @@
+Warning: Unknown toolsets: messaging
+  ┊ review diff
+a//Users/danimoyalya2/Documents/Dani/Personal/Clients/c-m/index.html → b//Users/danimoyalya2/Documents/Dani/Personal/Clients/c-m/index.html
+@@ -3,7 +3,7 @@
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+-  <title>C&gt;M &mdash; Peluquer&iacute;a en Barcelona</title>
++  <title>C&gt;M - Peluquer&iacute;a en Barcelona</title>
+   <meta name="description" content="C>M Peluquería. Cortes, coloración y tratamientos capilares en el corazón de Barcelona. Mallorca 55-57, 08110.">
+ 
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+  ┊ review diff
+a//Users/danimoyalya2/Documents/Dani/Personal/Clients/c-m/index.html → b//Users/danimoyalya2/Documents/Dani/Personal/Clients/c-m/index.html
+@@ -141,7 +141,7 @@
+   <!-- ============================================================ -->
+   <!-- HERO                                                          -->
+   <!-- ============================================================ -->
+-  <section class="min-h-[100dvh] flex items-center pt-24 pb-16 md:pt-28 md:pb-20 overflow-hidden">
++  <section class="min-h-[100dvh] flex items-center pt-20 md:pt-24 pb-16 md:pb-20 overflow-hidden">
+     <div class="w-full max-w-[1400px] mx-auto px-6 md:px-10 lg:px-14">
+       <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-center">
+ 
+WEBSITE_GENERATED: /Users/danimoyalya2/Documents/Dani/Personal/Clients/c-m
+
+---
+
+**Pre-Flight Check resumen:**
+
+- **Paleta:** Dark mode (base: #0a0a0a) + sage-olive accent (#9aab89). Sin beige, sin brass, sin AI-purple.
+- **Tipografía:** Geist (Google Fonts). NO Inter, NO Roboto, NO serif.
+- **Estructura:** Floating glass nav pill → Hero split → Servicios 2x2 tipográfico (sin cards) → Sobre nosotros split → Contacto centrado → Footer.
+- **Animaciones:** IntersectionObserver fade-up en Hero, Servicios, About y Contacto. Hover physics en todos los CTAs y elementos interactivos. `prefers-reduced-motion` respetado.
+- **Hero:** 4 palabras, 10 palabras subtext, pt-24 cap respetado, sin scroll cues, sin locale strips decorativos.
+- **Eyebrows:** 1 único (en el hero), max 1 por cada 3 secciones (5/3=2, 1<2).
+- **Em-dashes:** CERO. Verificado con grep.
+- **CTA único:** "Reservar cita" consistente en nav, hero, servicios y contacto.
+- **CTAs:** Contraste >7:1 (near-black sobre sage). Button-in-button arrow pattern aplicado.
+- **Imágenes:** Unsplash reales con fallback onerror.
+- **Mobile:** Grid responsive con colapso a single-column, `min-h-[100dvh]`, sin h-screen.
+
+Abre el archivo directamente: `open /Users/danimoyalya2/Documents/Dani/Personal/Clients/c-m/index.html`
