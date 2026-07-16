@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Abitare - Muebles de diseño italiano y artesanía local en Badalona. Transformamos espacios en hogares." />
+  <title>Abitare · Muebles de Diseño</title>
+
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            olive: {
+              DEFAULT: '#4A5D3F',
+              light: '#5C724D',
+              dark: '#3A4A32',
+              pale: '#E8EDE0',
+            },
+            ink: '#171717',
+            muted: '#6E6E6E',
+            surface: '#F8F8F6',
+            warm: '#F2EFE9',
+          },
+          transitionTimingFunction: {
+            'out-expo': 'cubic-bezier(0.19, 1, 0.22, 1)',
+            'out-quart': 'cubic-bezier(0.25, 1, 0.5, 1)',
+          },
+        },
+      },
+    }
+  </script>
+
+  <style>
+    /* Reveal animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.9s cubic-bezier(0.19, 1, 0.22, 1),
+                  transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* Stagger children */
+    .stagger-children > * {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s cubic-bezier(0.19, 1, 0.22, 1),
+                  transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    .stagger-children.visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(2) { transition-delay: 0.15s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(3) { transition-delay: 0.25s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(4) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(5) { transition-delay: 0.45s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(6) { transition-delay: 0.55s; opacity: 1; transform: translateY(0); }
+
+    /* Image hover */
+    .img-hover {
+      transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    .img-hover-wrap:hover .img-hover {
+      transform: scale(1.04);
+    }
+
+    /* Nav glass */
+    .nav-glass {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    /* Smooth image loading */
+    img {
+      transition: opacity 0.5s ease;
+    }
+    img.loaded {
+      opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal,
+      .stagger-children > * {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .img-hover {
+        transition: none;
+      }
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d1d1cf; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #b0b0ae; }
+  </style>
+</head>
+<body class="font-sans antialiased text-ink bg-white">
+
+  <!-- ===== NAV ===== -->
+  <nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out-expo">
+    <div class="mx-auto flex items-center justify-between px-6 py-5 lg:px-12 lg:py-6 max-w-[1400px]">
+      <a href="#" class="text-2xl font-semibold tracking-tight text-ink no-underline hover:opacity-70 transition-opacity duration-300">
+        Abitare
+      </a>
+      <a href="#contacto"
+         class="inline-flex items-center gap-2 rounded-full bg-olive px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:bg-olive-light hover:scale-[1.03] active:scale-[0.97] no-underline">
+        Visítanos
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="relative min-h-[100dvh] flex items-center pt-20 pb-16 overflow-hidden">
+    <!-- Background -->
+    <div class="absolute inset-0 bg-surface"></div>
+
+    <div class="relative w-full max-w-[1400px] mx-auto px-6 lg:px-12">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+        <!-- Left: Text -->
+        <div class="reveal">
+          <p class="text-xs font-medium uppercase tracking-[0.2em] text-olive mb-6">
+            Badalona · Desde 1998
+          </p>
+          <h1 class="text-5xl sm:text-6xl lg:text-7xl font-light tracking-[-0.02em] leading-[1.05] text-ink mb-8">
+            Muebles que<br />transforman<br />tu espacio
+          </h1>
+          <p class="text-lg text-muted leading-relaxed max-w-[440px] mb-10">
+            Diseño italiano y artesanía local para crear ambientes que reflejan quién eres.
+          </p>
+          <a href="#colecciones"
+             class="inline-flex items-center gap-3 rounded-full bg-ink px-7 py-4 text-base font-medium text-white transition-all duration-300 hover:bg-ink/85 hover:scale-[1.02] active:scale-[0.97] no-underline group">
+            Descubre la colección
+            <span class="flex items-center justify-center w-7 h-7 rounded-full bg-white/15 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </a>
+        </div>
+
+        <!-- Right: Image -->
+        <div class="reveal reveal-delay-2 img-hover-wrap overflow-hidden rounded-[2rem] shadow-2xl shadow-ink/5">
+          <img
+            src="https://source.unsplash.com/1200x900/?modern,living-room,interior,design,furniture"
+            alt="Interior moderno con muebles de diseño"
+            class="img-hover w-full h-[500px] lg:h-[620px] object-cover"
+            loading="eager"
+            onload="this.classList.add('loaded')"
+          />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COLECCIONES ===== -->
+  <section id="colecciones" class="py-28 lg:py-36 bg-white">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+      <div class="reveal mb-16 lg:mb-20">
+        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-light tracking-[-0.02em] leading-[1.1] text-ink">
+          Colecciones
+        </h2>
+        <p class="text-lg text-muted mt-5 max-w-[480px] leading-relaxed">
+          Cada espacio merece un mobiliario a su altura. Descubre nuestras líneas de producto pensadas para cada rincón de tu hogar.
+        </p>
+      </div>
+
+      <!-- Bento Grid -->
+      <div class="stagger-children grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <!-- Salones (large, spans 2 cols) -->
+        <div class="lg:col-span-2 group cursor-pointer img-hover-wrap overflow-hidden rounded-[2rem] relative bg-surface min-h-[340px] lg:min-h-[420px]">
+          <img
+            src="https://source.unsplash.com/1000x700/?living-room,sofa,interior,modern,design"
+            alt="Salones"
+            class="img-hover absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-ink/50 via-ink/10 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-8 lg:p-10">
+            <h3 class="text-2xl lg:text-3xl font-medium text-white mb-2">Salones</h3>
+            <p class="text-white/70 text-sm max-w-[300px]">Sofás, mesas de centro y estanterías que definen el corazón de tu casa.</p>
+          </div>
+        </div>
+
+        <!-- Dormitorios -->
+        <div class="group cursor-pointer img-hover-wrap overflow-hidden rounded-[2rem] relative bg-surface min-h-[340px] lg:min-h-[420px]">
+          <img
+            src="https://source.unsplash.com/600x900/?bedroom,bed,interior,design"
+            alt="Dormitorios"
+            class="img-hover absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-ink/50 via-ink/10 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-8 lg:p-10">
+            <h3 class="text-2xl lg:text-3xl font-medium text-white mb-2">Dormitorios</h3>
+            <p class="text-white/70 text-sm">Armarios, camas y mesillas que convierten tu descanso en un ritual.</p>
+          </div>
+        </div>
+
+        <!-- Cocinas -->
+        <div class="group cursor-pointer img-hover-wrap overflow-hidden rounded-[2rem] relative bg-surface min-h-[300px] lg:min-h-[340px]">
+          <img
+            src="https://source.unsplash.com/600x600/?modern,kitchen,interior,design"
+            alt="Cocinas"
+            class="img-hover absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-ink/50 via-ink/10 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-8">
+            <h3 class="text-2xl font-medium text-white mb-2">Cocinas</h3>
+            <p class="text-white/70 text-sm">Funcionalidad y estilo en el espacio donde todo sucede.</p>
+          </div>
+        </div>
+
+        <!-- Oficinas -->
+        <div class="group cursor-pointer img-hover-wrap overflow-hidden rounded-[2rem] relative bg-surface min-h-[300px] lg:min-h-[340px]">
+          <img
+            src="https://source.unsplash.com/600x600/?home-office,desk,interior,modern"
+            alt="Oficinas"
+            class="img-hover absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-ink/50 via-ink/10 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-8">
+            <h3 class="text-2xl font-medium text-white mb-2">Oficinas</h3>
+            <p class="text-white/70 text-sm">Escritorios y sillas ergonómicas para trabajar con comodidad.</p>
+          </div>
+        </div>
+
+        <!-- Complementos (spans 2 cols) -->
+        <div class="lg:col-span-3 group cursor-pointer img-hover-wrap overflow-hidden rounded-[2rem] relative bg-surface min-h-[220px] lg:min-h-[260px]">
+          <img
+            src="https://source.unsplash.com/1400x500/?home,decor,interior,accessories"
+            alt="Complementos"
+            class="img-hover absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-ink/50 via-ink/20 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 p-8 lg:p-10">
+            <h3 class="text-2xl lg:text-3xl font-medium text-white mb-2">Complementos</h3>
+            <p class="text-white/70 text-sm max-w-[400px]">Iluminación, alfombras, espejos y detalles que dan carácter a cada estancia.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SOBRE NOSOTROS ===== -->
+  <section class="py-28 lg:py-36 bg-surface">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+      <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+        <!-- Left: Image -->
+        <div class="reveal img-hover-wrap overflow-hidden rounded-[2rem] shadow-2xl shadow-ink/3 order-2 lg:order-1">
+          <img
+            src="https://source.unsplash.com/1000x800/?furniture,store,showroom,interior"
+            alt="Nuestra tienda en Badalona"
+            class="img-hover w-full h-[400px] lg:h-[560px] object-cover"
+            loading="lazy"
+          />
+        </div>
+
+        <!-- Right: Text -->
+        <div class="reveal reveal-delay-1 order-1 lg:order-2">
+          <p class="text-xs font-medium uppercase tracking-[0.2em] text-olive mb-6">
+            Sobre nosotros
+          </p>
+          <h2 class="text-4xl sm:text-5xl lg:text-6xl font-light tracking-[-0.02em] leading-[1.1] text-ink mb-8">
+            Tres décadas<br />dando forma<br />a hogares
+          </h2>
+          <div class="space-y-5 text-muted leading-relaxed max-w-[480px]">
+            <p>
+              En Abitare llevamos desde 1998 seleccionando muebles que unen el diseño italiano con la artesanía de proximidad. No vendemos muebles: ayudamos a construir el espacio donde suceden tus momentos.
+            </p>
+            <p>
+              Nuestra tienda en Badalona es un espacio vivo donde puedes tocar los materiales, probar los acabados y recibir asesoramiento personalizado. Cada pieza que ofrecemos ha sido elegida con un criterio: que dure, que emocione y que funcione.
+            </p>
+          </div>
+
+          <!-- Stats row -->
+          <div class="grid grid-cols-3 gap-8 mt-12 pt-10 border-t border-ink/8">
+            <div>
+              <p class="text-3xl lg:text-4xl font-light text-olive">25+</p>
+              <p class="text-sm text-muted mt-1">Años de experiencia</p>
+            </div>
+            <div>
+              <p class="text-3xl lg:text-4xl font-light text-olive">2.000+</p>
+              <p class="text-sm text-muted mt-1">Proyectos entregados</p>
+            </div>
+            <div>
+              <p class="text-3xl lg:text-4xl font-light text-olive">40+</p>
+              <p class="text-sm text-muted mt-1">Marcas seleccionadas</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACTO ===== -->
+  <section id="contacto" class="py-28 lg:py-36 bg-white">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+      <div class="grid lg:grid-cols-2 gap-16 lg:gap-24">
+
+        <!-- Left: Info -->
+        <div class="reveal">
+          <p class="text-xs font-medium uppercase tracking-[0.2em] text-olive mb-6">
+            Contacto
+          </p>
+          <h2 class="text-4xl sm:text-5xl lg:text-6xl font-light tracking-[-0.02em] leading-[1.1] text-ink mb-8">
+            Ven a<br />conocernos
+          </h2>
+          <p class="text-lg text-muted leading-relaxed max-w-[440px] mb-12">
+            Estamos en el centro de Badalona. Pásate sin cita previa o llámanos para cualquier consulta.
+          </p>
+
+          <div class="space-y-8">
+            <!-- Address -->
+            <div class="flex gap-5">
+              <div class="flex-shrink-0 w-12 h-12 rounded-full bg-olive-pale flex items-center justify-center text-olive">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-ink mb-1">Dirección</p>
+                <p class="text-muted leading-relaxed">Carrer de Pérez Galdós 30-33<br />08913 Badalona, Barcelona</p>
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="flex gap-5">
+              <div class="flex-shrink-0 w-12 h-12 rounded-full bg-olive-pale flex items-center justify-center text-olive">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-ink mb-1">Teléfono</p>
+                <a href="tel:+34933985777" class="text-muted hover:text-olive transition-colors duration-300 no-underline">+34 933 985 777</a>
+              </div>
+            </div>
+
+            <!-- Hours -->
+            <div class="flex gap-5">
+              <div class="flex-shrink-0 w-12 h-12 rounded-full bg-olive-pale flex items-center justify-center text-olive">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-ink mb-1">Horario</p>
+                <p class="text-muted leading-relaxed">Lunes a Viernes: 10:00 - 14:00 / 17:00 - 20:30<br />Sábados: 10:00 - 14:00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Map / Visual -->
+        <div class="reveal reveal-delay-1 img-hover-wrap overflow-hidden rounded-[2rem] shadow-2xl shadow-ink/3 bg-surface min-h-[400px] lg:min-h-[560px] flex items-center justify-center">
+          <img
+            src="https://source.unsplash.com/1000x800/?barcelona,street,architecture,storefront"
+            alt="Abitare en Badalona"
+            class="img-hover w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="bg-ink text-white py-16 lg:py-20">
+    <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+
+        <!-- Brand -->
+        <div>
+          <p class="text-2xl font-semibold tracking-tight mb-4">Abitare</p>
+          <p class="text-white/50 text-sm leading-relaxed max-w-[260px]">
+            Muebles de diseño italiano y artesanía local en Badalona desde 1998.
+          </p>
+        </div>
+
+        <!-- Quick links -->
+        <div>
+          <p class="text-sm font-medium text-white/40 uppercase tracking-[0.15em] mb-5">Enlaces</p>
+          <div class="space-y-3">
+            <a href="#" class="block text-white/60 text-sm hover:text-white transition-colors duration-300 no-underline">Inicio</a>
+            <a href="#colecciones" class="block text-white/60 text-sm hover:text-white transition-colors duration-300 no-underline">Colecciones</a>
+            <a href="#contacto" class="block text-white/60 text-sm hover:text-white transition-colors duration-300 no-underline">Contacto</a>
+          </div>
+        </div>
+
+        <!-- Contact footer -->
+        <div>
+          <p class="text-sm font-medium text-white/40 uppercase tracking-[0.15em] mb-5">Visítanos</p>
+          <div class="space-y-3 text-white/60 text-sm">
+            <p>Carrer de Pérez Galdós 30-33</p>
+            <p>08913 Badalona, Barcelona</p>
+            <a href="tel:+34933985777" class="block hover:text-white transition-colors duration-300 no-underline">+34 933 985 777</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <p class="text-white/30 text-xs">© 2025 Abitare. Todos los derechos reservados.</p>
+        <p class="text-white/30 text-xs">Diseño italiano · Artesanía local</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // Intersection Observer for reveal animations
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60px 0px',
+      threshold: 0.1,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal, .stagger-children').forEach((el) => {
+      observer.observe(el);
+    });
+
+    // Nav scroll behavior
+    const nav = document.getElementById('nav');
+    let lastScrollY = 0;
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      if (scrollY > 80) {
+        nav.classList.add('nav-glass');
+      } else {
+        nav.classList.remove('nav-glass');
+      }
+      lastScrollY = scrollY;
+    }, { passive: true });
+
+    // Smooth image fade-in
+    document.querySelectorAll('img').forEach((img) => {
+      if (img.complete) {
+        img.classList.add('loaded');
+      } else {
+        img.addEventListener('load', () => img.classList.add('loaded'));
+      }
+    });
+  </script>
+
+</body>
+</html>
