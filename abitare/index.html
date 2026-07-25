@@ -6,6 +6,8 @@
   <meta name="description" content="Abitare - Muebles de diseño italiano y artesanía local en Badalona. Transformamos espacios en hogares." />
   <title>Abitare · Muebles de Diseño</title>
 
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234A5D3F'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Outfit,sans-serif' font-size='18' font-weight='600' fill='%23fff'%3EA%3C/text%3E%3C/svg%3E" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -286,9 +288,38 @@
     .gallery-scroll::-webkit-scrollbar { width: 5px; }
     .gallery-scroll::-webkit-scrollbar-track { background: transparent; }
     .gallery-scroll::-webkit-scrollbar-thumb { background: #d1d1cf; border-radius: 3px; }
+
+    /* ---- Balanced headline wrapping ---- */
+    h1, h2, h3 { text-wrap: balance; }
+    p { text-wrap: pretty; }
+
+    /* ---- Reduced motion: honor user preference across all motion ---- */
+    @media (prefers-reduced-motion: reduce) {
+      .scroll-smooth { scroll-behavior: auto; }
+      .reveal,
+      .stagger-children > * {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .gallery-card {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+      }
+      #gallery-panel,
+      #gallery-backdrop,
+      #lightbox,
+      #lightbox img { transition-duration: 0.01ms !important; }
+      .img-hover { transition: none !important; }
+      .img-hover-wrap:hover .img-hover { transform: none !important; }
+    }
   </style>
 </head>
 <body class="font-sans antialiased text-ink bg-white">
+
+  <!-- Sentinel: crosses out of view ~80px down; toggles nav glass without a scroll listener -->
+  <div id="nav-sentinel" class="absolute top-0 left-0 h-20 w-px pointer-events-none" aria-hidden="true"></div>
 
   <!-- ===== NAV ===== -->
   <nav id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
@@ -487,8 +518,8 @@
         </div>
       </div>
       <div class="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <p class="text-white/30 text-xs">© 2025 Abitare. Todos los derechos reservados.</p>
-        <p class="text-white/30 text-xs">Diseño italiano · Artesanía local</p>
+        <p class="text-white/55 text-xs">© 2025 Abitare. Todos los derechos reservados.</p>
+        <p class="text-white/55 text-xs">Diseño italiano · Artesanía local</p>
       </div>
     </div>
   </footer>
@@ -718,12 +749,15 @@
 
   document.querySelectorAll('.reveal, .stagger-children').forEach(el => observer.observe(el));
 
-  /* ---- Nav glass on scroll ---- */
+  /* ---- Nav glass on scroll (IntersectionObserver sentinel, no scroll listener) ---- */
   const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 80) nav.classList.add('nav-glass');
-    else nav.classList.remove('nav-glass');
-  }, { passive: true });
+  const navSentinel = document.getElementById('nav-sentinel');
+  if (navSentinel) {
+    const navObserver = new IntersectionObserver(([entry]) => {
+      nav.classList.toggle('nav-glass', !entry.isIntersecting);
+    }, { rootMargin: '0px', threshold: 0 });
+    navObserver.observe(navSentinel);
+  }
 
   /* ---- Reduced motion ---- */
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
