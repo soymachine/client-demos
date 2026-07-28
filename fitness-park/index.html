@@ -134,11 +134,107 @@
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
         }
 
+        /* ============ SCROLL-DRIVEN BACKGROUND SCENES ============ */
+        /* Fixed layer that sits above the sky gradient + clouds, below content */
+        .scene-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .scene {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transform: scale(1.08);
+            filter: blur(8px) saturate(1.05);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 1.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        filter 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        /* Active scene: fades in, Ken-Burns settle, sharpens */
+        .scene.is-active {
+            opacity: 0.55;
+            transform: scale(1);
+            filter: blur(0px) saturate(1.05);
+        }
+        /* Brand-tinted scrim keeps white text readable over photos (WCAG) */
+        .scene-scrim {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            background:
+                linear-gradient(180deg, rgba(2,132,199,0.42) 0%, rgba(37,99,235,0.30) 45%, rgba(2,132,199,0.48) 100%);
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .scene-scrim.is-active { opacity: 1; }
+
+        /* ============ FLANKING ATHLETES (HERO) ============ */
+        .athlete {
+            position: fixed;
+            bottom: 0;
+            z-index: 3;
+            pointer-events: none;
+            height: min(88vh, 900px);
+            filter: drop-shadow(0 30px 60px rgba(2, 60, 120, 0.28));
+            will-change: transform, opacity;
+        }
+        .athlete img { height: 100%; width: auto; object-fit: contain; object-position: bottom; }
+        .athlete-left  { left: max(-2vw, -40px); }
+        .athlete-right { right: max(-2vw, -40px); }
+
+        /* Scroll-driven: athletes glide outward + fade as the hero scrolls away.
+           Uses modern CSS scroll timeline where supported (no JS, GPU-friendly). */
+        @supports (animation-timeline: scroll()) {
+            .athlete-left {
+                animation: athleteExitLeft linear both;
+                animation-timeline: scroll(root block);
+                animation-range: 0vh 85vh;
+            }
+            .athlete-right {
+                animation: athleteExitRight linear both;
+                animation-timeline: scroll(root block);
+                animation-range: 0vh 85vh;
+            }
+        }
+        @keyframes athleteExitLeft {
+            0%   { transform: translateX(0) translateY(0) rotate(0deg); opacity: 1; }
+            70%  { opacity: 0.85; }
+            100% { transform: translateX(-70%) translateY(6%) rotate(-3deg); opacity: 0; }
+        }
+        @keyframes athleteExitRight {
+            0%   { transform: translateX(0) translateY(0) rotate(0deg); opacity: 1; }
+            70%  { opacity: 0.85; }
+            100% { transform: translateX(70%) translateY(6%) rotate(3deg); opacity: 0; }
+        }
+        /* Fallback for browsers without scroll timeline: JS toggles .hero-gone */
+        .athlete { transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s ease; }
+        body.hero-gone .athlete-left  { transform: translateX(-70%) translateY(6%) rotate(-3deg); opacity: 0; }
+        body.hero-gone .athlete-right { transform: translateX(70%) translateY(6%) rotate(3deg); opacity: 0; }
+
+        /* Hide flanking athletes on small screens to protect readability + touch */
+        @media (max-width: 1023px) {
+            .athlete { display: none; }
+        }
+
         /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
             .reveal { opacity: 1; transform: none; transition: none; }
             .card-lift:hover { transform: none; }
             html { scroll-behavior: auto; }
+            .scene { transition: opacity 0.4s ease; transform: none; filter: none; }
+            .scene.is-active { transform: none; filter: none; }
+            .athlete {
+                animation: none !important;
+                animation-timeline: none !important;
+                transition: opacity 0.4s ease;
+            }
         }
     </style>
 </head>
@@ -153,6 +249,23 @@
 
     <!-- ============ CLOUD TEXTURE OVERLAY ============ -->
     <div class="fixed inset-0 pointer-events-none z-[1] cloud-bg"></div>
+
+    <!-- ============ SCROLL-DRIVEN BACKGROUND SCENES ============ -->
+    <!-- Photos fade/crossfade as the visitor scrolls through the story:
+         hero (sky + athletes) -> gym interior -> Barcelona street. -->
+    <div class="scene-layer">
+        <div class="scene" id="scene-gym" style="background-image:url('assets/gym-interior.jpg')"></div>
+        <div class="scene" id="scene-bcn" style="background-image:url('assets/barcelona-street.jpg')"></div>
+    </div>
+    <div class="scene-scrim" id="scene-scrim"></div>
+
+    <!-- Flanking athletes: only in the hero, glide outward on scroll (lg+ only) -->
+    <div class="athlete athlete-left" aria-hidden="true">
+        <img src="assets/athlete-man.png" alt="" loading="eager">
+    </div>
+    <div class="athlete athlete-right" aria-hidden="true">
+        <img src="assets/athlete-woman.png" alt="" loading="eager">
+    </div>
 
     <!-- ============ NAVIGATION ============ -->
     <nav class="fixed top-0 inset-x-0 z-50 flex justify-center pt-6 px-4">
@@ -187,9 +300,9 @@
             <!-- Avatar row woven into text flow -->
             <div class="flex items-center justify-center gap-2 mt-5 mb-6">
                 <div class="flex -space-x-3">
-                    <img src="https://source.unsplash.com/80x80/?fitness,man,portrait" alt="Entrenador" class="w-10 h-10 md:w-12 md:h-12 rounded-full ring-[3px] ring-white object-cover hover:scale-110 transition-transform duration-300 z-30 relative" loading="lazy">
-                    <img src="https://source.unsplash.com/80x80/?woman,fitness,portrait" alt="Entrenadora" class="w-10 h-10 md:w-12 md:h-12 rounded-full ring-[3px] ring-white object-cover hover:scale-110 transition-transform duration-300 z-20 relative" loading="lazy">
-                    <img src="https://source.unsplash.com/80x80/?athlete,portrait" alt="Atleta" class="w-10 h-10 md:w-12 md:h-12 rounded-full ring-[3px] ring-white object-cover hover:scale-110 transition-transform duration-300 z-10 relative" loading="lazy">
+                    <img src="assets/avatar-1.jpg" alt="Entrenador" class="w-10 h-10 md:w-12 md:h-12 rounded-full ring-[3px] ring-white object-cover hover:scale-110 transition-transform duration-300 z-30 relative" loading="lazy">
+                    <img src="assets/avatar-2.jpg" alt="Entrenadora" class="w-10 h-10 md:w-12 md:h-12 rounded-full ring-[3px] ring-white object-cover hover:scale-110 transition-transform duration-300 z-20 relative" loading="lazy">
+                    <img src="assets/avatar-3.jpg" alt="Atleta" class="w-10 h-10 md:w-12 md:h-12 rounded-full ring-[3px] ring-white object-cover hover:scale-110 transition-transform duration-300 z-10 relative" loading="lazy">
                     <div class="w-10 h-10 md:w-12 md:h-12 rounded-full ring-[3px] ring-white bg-white/25 flex items-center justify-center text-white text-xs font-bold z-0">
                         +500
                     </div>
@@ -255,7 +368,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
                 <!-- Card 1: large, spans 2 cols -->
                 <div class="md:col-span-2 glass rounded-[2rem] p-6 md:p-8 card-lift reveal reveal-delay-1 overflow-hidden relative min-h-[320px] flex flex-col justify-end">
-                    <img src="https://source.unsplash.com/800x600/?gym,weights,training" alt="Sala de pesas" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
+                    <img src="assets/serv-musculacion.jpg" alt="Sala de pesas" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
                     <div class="relative z-10">
                         <span class="text-[10px] uppercase tracking-[0.2em] text-white/50 font-medium">Zona principal</span>
                         <h3 class="text-2xl md:text-3xl font-bold text-white mt-2">Sala de musculacion</h3>
@@ -265,7 +378,7 @@
 
                 <!-- Card 2: standard -->
                 <div class="glass rounded-[2rem] p-6 md:p-8 card-lift reveal reveal-delay-2 overflow-hidden relative min-h-[320px] flex flex-col justify-end">
-                    <img src="https://source.unsplash.com/800x600/?yoga,studio,fitness" alt="Estudio" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
+                    <img src="assets/serv-estudio.jpg" alt="Estudio" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
                     <div class="relative z-10">
                         <span class="text-[10px] uppercase tracking-[0.2em] text-white/50 font-medium">Colectivo</span>
                         <h3 class="text-2xl md:text-3xl font-bold text-white mt-2">Estudio de clases</h3>
@@ -275,7 +388,7 @@
 
                 <!-- Card 3: standard -->
                 <div class="glass rounded-[2rem] p-6 md:p-8 card-lift reveal reveal-delay-3 overflow-hidden relative min-h-[280px] flex flex-col justify-end">
-                    <img src="https://source.unsplash.com/800x600/?cardio,gym,treadmill" alt="Cardio" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
+                    <img src="assets/serv-cardio.jpg" alt="Cardio" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
                     <div class="relative z-10">
                         <span class="text-[10px] uppercase tracking-[0.2em] text-white/50 font-medium">Cardio</span>
                         <h3 class="text-2xl font-bold text-white mt-2">Zona cardiovascular</h3>
@@ -285,7 +398,7 @@
 
                 <!-- Card 4: standard -->
                 <div class="glass rounded-[2rem] p-6 md:p-8 card-lift reveal reveal-delay-3 overflow-hidden relative min-h-[280px] flex flex-col justify-end">
-                    <img src="https://source.unsplash.com/800x600/?locker,spa,wellness" alt="Vestuarios" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
+                    <img src="assets/serv-vestuarios.jpg" alt="Vestuarios" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
                     <div class="relative z-10">
                         <span class="text-[10px] uppercase tracking-[0.2em] text-white/50 font-medium">Bienestar</span>
                         <h3 class="text-2xl font-bold text-white mt-2">Vestuarios y sauna</h3>
@@ -295,7 +408,7 @@
 
                 <!-- Card 5: spans 2 cols -->
                 <div class="md:col-span-2 glass rounded-[2rem] p-6 md:p-8 card-lift reveal reveal-delay-4 overflow-hidden relative min-h-[280px] flex flex-col justify-end">
-                    <img src="https://source.unsplash.com/800x600/?personal,trainer,coach" alt="Entrenador personal" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
+                    <img src="assets/serv-personal.jpg" alt="Entrenador personal" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
                     <div class="relative z-10">
                         <span class="text-[10px] uppercase tracking-[0.2em] text-white/50 font-medium">Premium</span>
                         <h3 class="text-2xl md:text-3xl font-bold text-white mt-2">Entrenador personal</h3>
@@ -313,7 +426,7 @@
                 <!-- Image -->
                 <div class="reveal">
                     <div class="glass-strong rounded-[2.5rem] p-2 overflow-hidden">
-                        <img src="https://source.unsplash.com/800x1000/?gym,interior,modern" alt="Fitness Park interior" class="w-full h-[500px] object-cover rounded-[calc(2.5rem-0.5rem)]" loading="lazy">
+                        <img src="assets/nosotros.jpg" alt="Fitness Park interior" class="w-full h-[500px] object-cover rounded-[calc(2.5rem-0.5rem)]" loading="lazy">
                     </div>
                 </div>
                 <!-- Text -->
@@ -503,6 +616,58 @@
         if (track && clone) {
             clone.innerHTML = track.innerHTML;
         }
+
+        // ============ SCROLL-DRIVEN BACKGROUND SCENES ============
+        (function () {
+            const sceneGym = document.getElementById('scene-gym');
+            const sceneBcn = document.getElementById('scene-bcn');
+            const scrim = document.getElementById('scene-scrim');
+            const heroEl = document.querySelector('section.min-h-\\[100dvh\\]');
+
+            // Map each section to the scene that should be showing while it's on screen.
+            const sceneFor = {
+                'servicios': sceneGym,   // gym interior appears here
+                'nosotros': sceneBcn,    // Barcelona street takes over
+                'contacto': sceneBcn,
+            };
+
+            let current = null;
+            function setScene(next) {
+                if (next === current) return;
+                [sceneGym, sceneBcn].forEach(s => s && s.classList.toggle('is-active', s === next));
+                scrim.classList.toggle('is-active', !!next);
+                current = next;
+            }
+
+            // Observe sections; the most-visible one drives the background.
+            const targets = ['servicios', 'nosotros', 'contacto']
+                .map(id => document.getElementById(id))
+                .filter(Boolean);
+
+            const visible = new Map();
+            const sceneObserver = new IntersectionObserver((entries) => {
+                entries.forEach(e => visible.set(e.target.id, e.isIntersecting ? e.intersectionRatio : 0));
+                // Pick the section with the greatest visibility.
+                let bestId = null, bestRatio = 0.12; // threshold: needs to be meaningfully in view
+                visible.forEach((ratio, id) => {
+                    if (ratio > bestRatio) { bestRatio = ratio; bestId = id; }
+                });
+                setScene(bestId ? sceneFor[bestId] : null);
+            }, { threshold: [0, 0.12, 0.25, 0.5, 0.75, 1] });
+            targets.forEach(t => sceneObserver.observe(t));
+
+            // Fallback for browsers without CSS scroll timelines: toggle athletes
+            // out of view once the hero has mostly scrolled past.
+            const supportsScrollTimeline = CSS && CSS.supports && CSS.supports('animation-timeline: scroll()');
+            if (!supportsScrollTimeline && heroEl) {
+                const heroObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(e => {
+                        document.body.classList.toggle('hero-gone', e.intersectionRatio < 0.55);
+                    });
+                }, { threshold: [0.4, 0.55, 0.7] });
+                heroObserver.observe(heroEl);
+            }
+        })();
     </script>
 
     <!--
