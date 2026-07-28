@@ -1,0 +1,77 @@
+Crea una página web one-page ESPECTACULAR para el siguiente negocio. Tiene que ser de nivel Awwwards, con diseño premium, tipografía cuidada, y motion sutil pero impactante.
+
+## DATOS DEL NEGOCIO
+- Nombre: Fitness Park
+- Categoría: Gimnasio
+- Dirección: Barcelona
+- Teléfono: No disponible
+- Estado actual: no tiene página web
+- Carpeta de salida: /Users/danimoyalya2/Documents/Dani/Personal/Clients/fitness-park
+
+## REQUISITOS TÉCNICOS
+1. Crea la web DENTRO de la carpeta `/Users/danimoyalya2/Documents/Dani/Personal/Clients/fitness-park`. No la crees en otro sitio.
+2. La web debe ser un único archivo `index.html` autónomo (CSS y JS inline o CDN).
+3. Usa Tailwind CSS desde CDN: `<script src="https://cdn.tailwindcss.com"></script>`
+4. Usa Motion (Framer Motion) desde CDN si añades animaciones.
+5. Usa fuentes de Google Fonts (Geist, Satoshi, Cabinet Grotesk, o Outfit - NUNCA Inter ni Roboto).
+6. Para imágenes, usa Unsplash Source (gratis): `https://source.unsplash.com/800x600/?gimnasio` o similar. Las imágenes deben ser REALES del sector, no placeholders genéricos.
+7. La web debe verse ESPECTACULAR, no genérica. Tipografía grande, espacios generosos, paleta cuidada.
+
+## REQUISITOS DE DISEÑO (OBLIGATORIO)
+- NO uses Inter, Roboto, Arial, ni Helvetica como fuentes
+- NO uses gradientes morados/azules genéricos de IA
+- NO uses 3 cards iguales en fila como estructura por defecto
+- NO uses sombras duras ni bordes grises genéricos
+- Usa un hero limpio con una sola frase potente + CTA claro
+- Incluye secciones: Hero → Servicios → Sobre nosotros → Contacto → Footer
+- La paleta debe ser coherente con el sector (ej: restaurante = tonos cálidos, clínica = tonos limpios y confiables)
+- Usa `min-h-[100dvh]` NUNCA `h-screen`
+- Añade una animación sutil de entrada (fade-up) en al menos 2 secciones
+- Texto del hero: máximo 8 palabras, subtexto máximo 20 palabras
+
+## IMÁGENES
+Usa fotos reales del sector. Ejemplos:
+- Restaurante: `https://source.unsplash.com/1200x800/?restaurant,interior`
+- Clínica: `https://source.unsplash.com/1200x800/?medical,clinic`
+- Peluquería: `https://source.unsplash.com/1200x800/?hair,salon`
+- Gimnasio: `https://source.unsplash.com/1200x800/?gym,fitness`
+- Abogacía: `https://source.unsplash.com/1200x800/?office,professional`
+- Tienda: `https://source.unsplash.com/1200x800/?store,boutique`
+
+## SISTEMA DE RESERVAS (NO incluir por defecto)
+Si el negocio es un restaurante, peluquería, clínica, veterinario, gimnasio o estética, añade al final del index.html este comentario HTML:
+
+<!-- RESERVAS: Cal.com (gratis, widget + app móvil).
+     1. Dani crea cuenta gratuita en cal.com para el cliente (con su email)
+     2. Configura 1 Event Type (ej: "Reservar cita") con horario L-V 9-20h
+     3. El cliente instala la app móvil (iOS/Android) y gestiona:
+        - Bloquear días, cambiar horarios, ver reservas, cancelar citas
+     4. Dani sustituye el slug abajo y descomenta el script
+     
+     <script data-cal-link="CLIENTE_SLUG" data-cal-config='{"layout":"month_view"}' src="https://app.cal.com/embed.js"></script>
+     
+     Coste: 0€/mes. App móvil gratis. Reservas ilimitadas. -->
+
+NO incluyas el script. Solo el comentario.
+
+## ENTREGABLE
+Cuando termines, confirma con un mensaje corto diciendo "WEBSITE_GENERATED: /Users/danimoyalya2/Documents/Dani/Personal/Clients/fitness-park".
+
+IMPORTANTE: NO uses write_file para crear los archivos. Usa el comando cat con heredoc en terminal así:
+cat > /Users/danimoyalya2/Documents/Dani/Personal/Clients/fitness-park/index.html << 'HTMLEOF'
+...contenido HTML...
+HTMLEOF
+
+## 🎨 REFERENCIA DE DISEÑO — OBLIGATORIO
+
+⚠️ DEBES COPIAR EL ESTILO de las siguientes referencias. No es una sugerencia — es un REQUISITO:
+
+### Referencia 1: suave azul cielo glassmorphism amistoso
+Fondo azul cielo suave con textura de nubes sutil (bg-sky-400 con gradiente hacia sky-300) ocupando toda la pantalla. Hero centrado con titular gigante en blanco (text-6xl md:text-8xl font-bold text-white) donde la segunda línea usa blanco semitransparente (text-white/50), intercalando avatares circulares con ring blanco (rounded-full ring-4 ring-white -space-x-4) y un icono app con esquinas redondeadas (rounded-3xl shadow-lg) directamente dentro del texto. Debajo, un subtítulo en fuente manuscrita cursiva pequeña (font-handwriting italic text-white/90) con una flecha dibujada apuntando a la tarjeta. Tarjeta glassmorphism central (bg-white/20 backdrop-blur-xl rounded-3xl p-8 max-w-xl mx-auto) que contiene una línea de tiempo vertical: línea conectora blanca fina, iconos emoji en círculos blancos (w-10 h-10 rounded-full bg-white shadow), títulos en blanco font-medium y fechas en text-white/60 text-sm con espaciado generoso (space-y-8). Animaciones: fade-in escalonado de los items del timeline al hacer scroll, hover suave en avatares (hover:scale-110 transition-transform duration-200) y flotación sutil del icono del hero.
+
+🔴 INSTRUCCIÓN CRÍTICA: La web que generes DEBE verse como si perteneciera al mismo universo visual que las referencias anteriores. Mismos colores de fondo, mismo estilo de hero, misma tipografía, mismos efectos visuales. Si la referencia usa glassmorphism → tú usas glassmorphism. Si usa bento grid → tú usas bento grid. No inventes un estilo diferente. COPIA el estilo de las referencias.
+
+
+## 🎯 ESTILO DE DISEÑO FORZADO: GLASSMORPHISM
+
+DEBES usar el estilo visual 'glassmorphism' para esta web. Investiga las características de este estilo y aplícalas rigurosamente. El diseño completo debe ser inequívocamente de estilo glassmorphism. Esto anula cualquier preferencia por defecto. Es un REQUISITO OBLIGATORIO.

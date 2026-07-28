@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fitness Park Barcelona - El gimnasio que transforma tu cuerpo. Instalaciones premium en el corazón de Barcelona.">
+    <title>Fitness Park - Barcelona</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'system-ui', 'sans-serif'],
+                        handwriting: ['Caveat', 'cursive'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 8s ease-in-out 2s infinite',
+                        'pulse-soft': 'pulseSoft 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        pulseSoft: {
+                            '0%, 100%': { opacity: '0.6' },
+                            '50%': { opacity: '1' },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Smooth scroll */
+        html { scroll-behavior: smooth; }
+
+        /* Glass card base */
+        .glass {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+        }
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.24);
+            backdrop-filter: blur(32px);
+            -webkit-backdrop-filter: blur(32px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+        .glass-subtle {
+            background: rgba(255, 255, 255, 0.10);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        /* Reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* Cloud texture overlay */
+        .cloud-bg {
+            background-image:
+                radial-gradient(ellipse 80% 60% at 20% 30%, rgba(255,255,255,0.25) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 75% 20%, rgba(255,255,255,0.2) 0%, transparent 55%),
+                radial-gradient(ellipse 50% 40% at 50% 70%, rgba(255,255,255,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 70% 50% at 85% 65%, rgba(255,255,255,0.18) 0%, transparent 55%);
+        }
+
+        /* Orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(60px);
+        }
+
+        /* Timeline line */
+        .timeline-line {
+            position: absolute;
+            left: 19px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Input styles */
+        .glass-input {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: white;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-input::placeholder { color: rgba(255, 255, 255, 0.5); }
+        .glass-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
+        }
+
+        /* Hover card lift */
+        .card-lift {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+            .card-lift:hover { transform: none; }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-white min-h-screen relative overflow-x-hidden bg-gradient-to-br from-sky-400 via-sky-350 to-blue-400">
+
+    <!-- ============ BACKGROUND ORBS ============ -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="orb w-[600px] h-[600px] bg-white/15 -top-40 -right-40 animate-float"></div>
+        <div class="orb w-[400px] h-[400px] bg-white/10 top-[60%] -left-20 animate-float-delayed"></div>
+        <div class="orb w-[350px] h-[350px] bg-white/8 bottom-0 right-[10%] animate-float"></div>
+    </div>
+
+    <!-- ============ CLOUD TEXTURE OVERLAY ============ -->
+    <div class="fixed inset-0 pointer-events-none z-[1] cloud-bg"></div>
+
+    <!-- ============ NAVIGATION ============ -->
+    <nav class="fixed top-0 inset-x-0 z-50 flex justify-center pt-6 px-4">
+        <div class="glass-strong rounded-full px-6 py-3 flex items-center gap-6 md:gap-10 max-w-fit">
+            <a href="#" class="text-white font-bold text-lg tracking-tight hover:scale-[1.03] transition-transform duration-300">
+                FITNESS PARK
+            </a>
+            <div class="hidden md:flex items-center gap-6 text-sm font-medium text-white/80">
+                <a href="#servicios" class="hover:text-white transition-colors duration-300">Servicios</a>
+                <a href="#nosotros" class="hover:text-white transition-colors duration-300">Nosotros</a>
+                <a href="#contacto" class="hover:text-white transition-colors duration-300">Contacto</a>
+            </div>
+            <a href="#contacto" class="bg-white text-sky-600 px-5 py-2 rounded-full text-sm font-semibold hover:scale-[1.04] active:scale-[0.97] transition-all duration-300 shadow-lg shadow-black/5">
+                Empieza ya
+            </a>
+        </div>
+    </nav>
+
+    <!-- ============ HERO ============ -->
+    <section class="relative z-10 min-h-[100dvh] flex flex-col items-center justify-center pt-24 pb-16 px-4">
+        <!-- Hero text block -->
+        <div class="text-center max-w-4xl mx-auto reveal">
+            <!-- Eyebrow -->
+            <p class="text-[11px] uppercase tracking-[0.22em] text-white/60 font-medium mb-6">
+                Barcelona
+            </p>
+            <!-- Headline -->
+            <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-[0.9]">
+                <span class="text-white">TRANSFORMA</span><br>
+                <span class="text-white/45">TU CUERPO</span>
+            </h1>
+            <!-- Avatar row woven into text flow -->
+            <div class="flex items-center justify-center gap-2 mt-5 mb-6">
+                <div class="flex -space-x-3">
+                    <img src="https://source.unsplash.com/80x80/?fitness,man,portrait" alt="Entrenador" class="w-10 h-10 md:w-12 md:h-12 rounded-full ring-[3px] ring-white object-cover hover:scale-110 transition-transform duration-300 z-30 relative" loading="lazy">
+                    <img src="https://source.unsplash.com/80x80/?woman,fitness,portrait" alt="Entrenadora" class="w-10 h-10 md:w-12 md:h-12 rounded-full ring-[3px] ring-white object-cover hover:scale-110 transition-transform duration-300 z-20 relative" loading="lazy">
+                    <img src="https://source.unsplash.com/80x80/?athlete,portrait" alt="Atleta" class="w-10 h-10 md:w-12 md:h-12 rounded-full ring-[3px] ring-white object-cover hover:scale-110 transition-transform duration-300 z-10 relative" loading="lazy">
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full ring-[3px] ring-white bg-white/25 flex items-center justify-center text-white text-xs font-bold z-0">
+                        +500
+                    </div>
+                </div>
+            </div>
+            <!-- Subtext -->
+            <p class="text-white/80 text-base md:text-lg max-w-lg mx-auto leading-relaxed reveal reveal-delay-1">
+                Entrena con los mejores profesionales en el corazón de Barcelona. Instalaciones premium y una comunidad que te impulsa cada dia.
+            </p>
+        </div>
+
+        <!-- Glass card timeline -->
+        <div class="glass-strong rounded-[2.5rem] p-6 md:p-10 max-w-xl w-full mx-auto mt-12 reveal reveal-delay-2">
+            <div class="relative pl-12">
+                <!-- Timeline line -->
+                <div class="timeline-line"></div>
+                <!-- Item 1 -->
+                <div class="relative mb-10 reveal reveal-delay-2">
+                    <div class="absolute -left-12 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-lg">
+                        🏋️
+                    </div>
+                    <h3 class="text-white font-semibold text-lg mb-1">Entrenamiento personalizado</h3>
+                    <p class="text-white/55 text-sm">Planes disenados para tus objetivos</p>
+                </div>
+                <!-- Item 2 -->
+                <div class="relative mb-10 reveal reveal-delay-3">
+                    <div class="absolute -left-12 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-lg">
+                        ⚡
+                    </div>
+                    <h3 class="text-white font-semibold text-lg mb-1">Clases colectivas</h3>
+                    <p class="text-white/55 text-sm">HIIT, yoga, spinning y mucho mas</p>
+                </div>
+                <!-- Item 3 -->
+                <div class="relative reveal reveal-delay-4">
+                    <div class="absolute -left-12 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center text-lg">
+                        📍
+                    </div>
+                    <h3 class="text-white font-semibold text-lg mb-1">Acceso total 24/7</h3>
+                    <p class="text-white/55 text-sm">Abierto todo el dia, todo el ano</p>
+                </div>
+            </div>
+            <!-- CTA inside card -->
+            <a href="#contacto" class="mt-8 block text-center bg-white text-sky-600 py-3.5 px-8 rounded-full font-semibold text-base hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 shadow-lg shadow-black/5">
+                Prueba una semana gratis
+            </a>
+        </div>
+    </section>
+
+    <!-- ============ SERVICIOS ============ -->
+    <section id="servicios" class="relative z-10 py-24 md:py-32 px-4">
+        <div class="max-w-6xl mx-auto">
+            <!-- Section header -->
+            <div class="mb-16 md:mb-20 reveal">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-none text-white">
+                    Todo lo que<br>necesitas
+                </h2>
+                <p class="text-white/65 text-lg mt-4 max-w-md">
+                    Equipamiento de ultima generacion y espacios disenados para que disfrutes cada entrenamiento.
+                </p>
+            </div>
+
+            <!-- Bento grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+                <!-- Card 1: large, spans 2 cols -->
+                <div class="md:col-span-2 glass rounded-[2rem] p-6 md:p-8 card-lift reveal reveal-delay-1 overflow-hidden relative min-h-[320px] flex flex-col justify-end">
+                    <img src="https://source.unsplash.com/800x600/?gym,weights,training" alt="Sala de pesas" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
+                    <div class="relative z-10">
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-white/50 font-medium">Zona principal</span>
+                        <h3 class="text-2xl md:text-3xl font-bold text-white mt-2">Sala de musculacion</h3>
+                        <p class="text-white/60 mt-2 max-w-sm">Maquinas de ultima generacion, peso libre y zona funcional de 400m2.</p>
+                    </div>
+                </div>
+
+                <!-- Card 2: standard -->
+                <div class="glass rounded-[2rem] p-6 md:p-8 card-lift reveal reveal-delay-2 overflow-hidden relative min-h-[320px] flex flex-col justify-end">
+                    <img src="https://source.unsplash.com/800x600/?yoga,studio,fitness" alt="Estudio" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
+                    <div class="relative z-10">
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-white/50 font-medium">Colectivo</span>
+                        <h3 class="text-2xl md:text-3xl font-bold text-white mt-2">Estudio de clases</h3>
+                        <p class="text-white/60 mt-2">Yoga, pilates, HIIT y cycling en un espacio disenado para sudar en grupo.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: standard -->
+                <div class="glass rounded-[2rem] p-6 md:p-8 card-lift reveal reveal-delay-3 overflow-hidden relative min-h-[280px] flex flex-col justify-end">
+                    <img src="https://source.unsplash.com/800x600/?cardio,gym,treadmill" alt="Cardio" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
+                    <div class="relative z-10">
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-white/50 font-medium">Cardio</span>
+                        <h3 class="text-2xl font-bold text-white mt-2">Zona cardiovascular</h3>
+                        <p class="text-white/60 mt-2">Cintas, elipticas y remo con pantallas integradas.</p>
+                    </div>
+                </div>
+
+                <!-- Card 4: standard -->
+                <div class="glass rounded-[2rem] p-6 md:p-8 card-lift reveal reveal-delay-3 overflow-hidden relative min-h-[280px] flex flex-col justify-end">
+                    <img src="https://source.unsplash.com/800x600/?locker,spa,wellness" alt="Vestuarios" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
+                    <div class="relative z-10">
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-white/50 font-medium">Bienestar</span>
+                        <h3 class="text-2xl font-bold text-white mt-2">Vestuarios y sauna</h3>
+                        <p class="text-white/60 mt-2">Taquillas, duchas, sauna y zona de descanso para despues del entreno.</p>
+                    </div>
+                </div>
+
+                <!-- Card 5: spans 2 cols -->
+                <div class="md:col-span-2 glass rounded-[2rem] p-6 md:p-8 card-lift reveal reveal-delay-4 overflow-hidden relative min-h-[280px] flex flex-col justify-end">
+                    <img src="https://source.unsplash.com/800x600/?personal,trainer,coach" alt="Entrenador personal" class="absolute inset-0 w-full h-full object-cover rounded-[2rem] opacity-30" loading="lazy">
+                    <div class="relative z-10">
+                        <span class="text-[10px] uppercase tracking-[0.2em] text-white/50 font-medium">Premium</span>
+                        <h3 class="text-2xl md:text-3xl font-bold text-white mt-2">Entrenador personal</h3>
+                        <p class="text-white/60 mt-2 max-w-sm">Sesiones uno a uno con profesionales titulados que te guian hacia tus metas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SOBRE NOSOTROS ============ -->
+    <section id="nosotros" class="relative z-10 py-24 md:py-32 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+                <!-- Image -->
+                <div class="reveal">
+                    <div class="glass-strong rounded-[2.5rem] p-2 overflow-hidden">
+                        <img src="https://source.unsplash.com/800x1000/?gym,interior,modern" alt="Fitness Park interior" class="w-full h-[500px] object-cover rounded-[calc(2.5rem-0.5rem)]" loading="lazy">
+                    </div>
+                </div>
+                <!-- Text -->
+                <div class="reveal reveal-delay-1">
+                    <p class="text-[11px] uppercase tracking-[0.22em] text-white/55 font-medium mb-4">Sobre nosotros</p>
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-tight text-white">
+                        El gimnasio que<br>Barcelona merecia
+                    </h2>
+                    <p class="text-white/65 text-base leading-relaxed mt-6 max-w-md">
+                        En Fitness Park creemos que entrenar debe ser una experiencia completa. Nuestro espacio de mas de 1.500m2 en pleno centro de Barcelona combina diseno, tecnologia y comunidad.
+                    </p>
+                    <p class="text-white/65 text-base leading-relaxed mt-4 max-w-md">
+                        Desde 2020 ayudamos a cientos de personas a transformar su cuerpo y su mentalidad. No somos un gimnasio mas. Somos tu segunda casa.
+                    </p>
+                    <!-- Stat pills -->
+                    <div class="flex flex-wrap gap-4 mt-8">
+                        <div class="glass-subtle rounded-2xl px-6 py-4">
+                            <p class="text-3xl font-bold text-white">1.500<span class="text-white/40 text-lg">m2</span></p>
+                            <p class="text-white/50 text-sm mt-0.5">De instalaciones</p>
+                        </div>
+                        <div class="glass-subtle rounded-2xl px-6 py-4">
+                            <p class="text-3xl font-bold text-white">500<span class="text-white/40 text-lg">+</span></p>
+                            <p class="text-white/50 text-sm mt-0.5">Miembros activos</p>
+                        </div>
+                        <div class="glass-subtle rounded-2xl px-6 py-4">
+                            <p class="text-3xl font-bold text-white">24<span class="text-white/40 text-lg">/7</span></p>
+                            <p class="text-white/50 text-sm mt-0.5">Acceso abierto</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ TESTIMONIALS MARQUEE ============ -->
+    <section class="relative z-10 py-16 md:py-20 overflow-hidden">
+        <div class="flex gap-6 animate-marquee whitespace-nowrap">
+            <!-- We'll duplicate for seamless loop via JS -->
+            <div class="flex gap-6 shrink-0" id="marquee-track">
+                <div class="glass rounded-2xl px-8 py-5 shrink-0">
+                    <p class="text-white font-medium">"El mejor gimnasio de Barcelona. Cambio mi vida."</p>
+                    <p class="text-white/45 text-sm mt-1">- Marina, 34</p>
+                </div>
+                <div class="glass rounded-2xl px-8 py-5 shrink-0">
+                    <p class="text-white font-medium">"Las clases de HIIT son increibles. Adictivo."</p>
+                    <p class="text-white/45 text-sm mt-1">- Alex, 28</p>
+                </div>
+                <div class="glass rounded-2xl px-8 py-5 shrink-0">
+                    <p class="text-white font-medium">"Entrenar a las 6am con estas vistas no tiene precio."</p>
+                    <p class="text-white/45 text-sm mt-1">- Carla, 41</p>
+                </div>
+                <div class="glass rounded-2xl px-8 py-5 shrink-0">
+                    <p class="text-white font-medium">"Mi entrenador personal me ayudo a correr mi primera maraton."</p>
+                    <p class="text-white/45 text-sm mt-1">- Hugo, 31</p>
+                </div>
+                <div class="glass rounded-2xl px-8 py-5 shrink-0">
+                    <p class="text-white font-medium">"Las instalaciones son de otro nivel. Limpio, moderno, top."</p>
+                    <p class="text-white/45 text-sm mt-1">- Lucia, 26</p>
+                </div>
+            </div>
+            <!-- Duplicate for seamless loop -->
+            <div class="flex gap-6 shrink-0" id="marquee-clone"></div>
+        </div>
+    </section>
+
+    <style>
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            animation: marquee 30s linear infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .animate-marquee { animation: none; }
+        }
+    </style>
+
+    <!-- ============ CONTACTO ============ -->
+    <section id="contacto" class="relative z-10 py-24 md:py-32 px-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-none text-white">
+                    Empieza hoy
+                </h2>
+                <p class="text-white/65 text-lg mt-4 max-w-md mx-auto">
+                    Dejanos tus datos y te contactamos para una visita guiada gratuita.
+                </p>
+            </div>
+
+            <!-- Contact form card -->
+            <div class="glass-strong rounded-[2.5rem] p-8 md:p-10 reveal reveal-delay-1">
+                <form class="space-y-5" onsubmit="event.preventDefault(); alert('Gracias por tu interes. Te contactaremos en las proximas 24h.');">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-white/70 text-sm font-medium mb-2" for="nombre">Nombre</label>
+                            <input type="text" id="nombre" placeholder="Tu nombre" class="glass-input w-full rounded-xl px-5 py-3.5 text-white placeholder:text-white/40">
+                        </div>
+                        <div>
+                            <label class="block text-white/70 text-sm font-medium mb-2" for="email">Email</label>
+                            <input type="email" id="email" placeholder="tu@email.com" class="glass-input w-full rounded-xl px-5 py-3.5 text-white placeholder:text-white/40">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-white/70 text-sm font-medium mb-2" for="telefono">Telefono</label>
+                        <input type="tel" id="telefono" placeholder="+34 600 000 000" class="glass-input w-full rounded-xl px-5 py-3.5 text-white placeholder:text-white/40">
+                    </div>
+                    <div>
+                        <label class="block text-white/70 text-sm font-medium mb-2" for="interes">Que te interesa?</label>
+                        <select id="interes" class="glass-input w-full rounded-xl px-5 py-3.5 text-white appearance-none bg-[image:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%222%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22/%3E%3C/svg%3E')] bg-[length:20px] bg-[right_16px_center] bg-no-repeat">
+                            <option value="" class="text-gray-900">Selecciona una opcion</option>
+                            <option value="musculacion" class="text-gray-900">Musculacion</option>
+                            <option value="clases" class="text-gray-900">Clases colectivas</option>
+                            <option value="personal" class="text-gray-900">Entrenador personal</option>
+                            <option value="todo" class="text-gray-900">Quiero probarlo todo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-white text-sky-600 py-4 px-8 rounded-full font-semibold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-xl shadow-black/10 mt-2">
+                        Solicitar visita gratuita
+                    </button>
+                </form>
+                <p class="text-white/40 text-xs text-center mt-5">
+                    Sin compromiso. Te respondemos en menos de 24 horas.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="relative z-10 py-16 px-4 border-t border-white/10">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <!-- Brand -->
+                <div class="text-center md:text-left">
+                    <p class="text-white font-bold text-xl tracking-tight">FITNESS PARK</p>
+                    <p class="text-white/40 text-sm mt-1">Barcelona, desde 2020</p>
+                </div>
+                <!-- Address -->
+                <div class="text-center">
+                    <p class="text-white/60 text-sm">Carrer de Balmes 123, Barcelona</p>
+                    <p class="text-white/40 text-sm mt-0.5">Abierto todos los dias 24/7</p>
+                </div>
+                <!-- Social links -->
+                <div class="flex gap-5">
+                    <a href="#" class="w-10 h-10 glass-subtle rounded-full flex items-center justify-center text-white/70 hover:text-white hover:scale-110 transition-all duration-300" aria-label="Instagram">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5"/></svg>
+                    </a>
+                    <a href="#" class="w-10 h-10 glass-subtle rounded-full flex items-center justify-center text-white/70 hover:text-white hover:scale-110 transition-all duration-300" aria-label="TikTok">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+                    </a>
+                    <a href="#" class="w-10 h-10 glass-subtle rounded-full flex items-center justify-center text-white/70 hover:text-white hover:scale-110 transition-all duration-300" aria-label="WhatsApp">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10h.01M15 10h.01M12 15a3.5 3.5 0 0 1-3-1.5"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-10 pt-6 border-t border-white/8 text-center">
+                <p class="text-white/30 text-xs">
+                    Fitness Park Barcelona. Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============ SCROLL REVEAL JS ============ -->
+    <script>
+        // Intersection Observer for reveal animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -60px 0px',
+            threshold: 0.1,
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Clone marquee for seamless loop
+        const track = document.getElementById('marquee-track');
+        const clone = document.getElementById('marquee-clone');
+        if (track && clone) {
+            clone.innerHTML = track.innerHTML;
+        }
+    </script>
+
+    <!--
+    RESERVAS: Cal.com (gratis, widget + app movil).
+         1. Dani crea cuenta gratuita en cal.com para el cliente (con su email)
+         2. Configura 1 Event Type (ej: "Reservar cita") con horario L-V 9-20h
+         3. El cliente instala la app movil (iOS/Android) y gestiona:
+            - Bloquear dias, cambiar horarios, ver reservas, cancelar citas
+         4. Dani sustituye el slug abajo y descomenta el script
+
+         <script data-cal-link="CLIENTE_SLUG" data-cal-config='{"layout":"month_view"}' src="https://app.cal.com/embed.js"></script>
+
+         Coste: 0EUR/mes. App movil gratis. Reservas ilimitadas.
+    -->
+
+</body>
+</html>
